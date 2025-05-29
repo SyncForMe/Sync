@@ -10,7 +10,7 @@ import { ThemeProvider, ThemeSwitcher, useTheme } from './utils/ThemeSystem';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://af267735-92eb-4cf3-b052-dff209029be0.preview.emergentagent.com';
 
 // Main App Component
-function App() {
+function AppContent() {
   const [currentSection, setCurrentSection] = useState('landing');
   const [walletConnected, setWalletConnected] = useState(false);
   const [connectedWallet, setConnectedWallet] = useState(null);
@@ -18,6 +18,9 @@ function App() {
   const [supportedChains, setSupportedChains] = useState([]);
   const [platformStats, setPlatformStats] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [walletManager] = useState(() => new WalletManager());
+  const [soundSystem] = useState(() => new SoundSystem());
+  const { theme } = useTheme();
 
   // Fetch initial data
   useEffect(() => {
