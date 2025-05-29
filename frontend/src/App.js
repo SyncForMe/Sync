@@ -87,8 +87,44 @@ function AppContent() {
     setUserAddress('');
   };
 
+  const showNotification = (title, message, type) => {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-20 right-4 z-50 p-4 rounded-xl max-w-sm transform transition-all duration-300 shadow-2xl ${
+      type === 'success' ? 'bg-green-600' :
+      type === 'error' ? 'bg-red-600' : 
+      type === 'info' ? 'bg-blue-600' : 'bg-purple-600'
+    } text-white`;
+    
+    notification.innerHTML = `
+      <div class="font-semibold mb-1">${title}</div>
+      <div class="text-sm opacity-90">${message}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+      notification.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 4000);
+  };
+
   return (
-    <div className="App">
+    <div 
+      className="App" 
+      style={{ 
+        background: theme.colors.background,
+        color: theme.colors.text,
+        minHeight: '100vh'
+      }}
+    >
       <Navigation 
         currentSection={currentSection} 
         setCurrentSection={setCurrentSection}
@@ -96,6 +132,7 @@ function AppContent() {
         connectedWallet={connectedWallet}
         userAddress={userAddress}
         disconnectWallet={disconnectWallet}
+        soundSystem={soundSystem}
       />
       
       {currentSection === 'landing' && (
@@ -105,6 +142,7 @@ function AppContent() {
           supportedChains={supportedChains}
           connectWallet={connectWallet}
           isLoading={isLoading}
+          soundSystem={soundSystem}
         />
       )}
       
@@ -115,6 +153,14 @@ function AppContent() {
           supportedChains={supportedChains}
           connectWallet={connectWallet}
           isLoading={isLoading}
+          soundSystem={soundSystem}
+        />
+      )}
+      
+      {currentSection === 'portfolio' && (
+        <AdvancedPortfolio 
+          userAddress={userAddress}
+          isVisible={currentSection === 'portfolio'}
         />
       )}
       
@@ -122,18 +168,12 @@ function AppContent() {
         <DemoSection 
           connectWallet={connectWallet}
           isLoading={isLoading}
+          soundSystem={soundSystem}
         />
       )}
       
       {currentSection === 'developer' && (
-        <DeveloperSection />
-      )}
-      
-      {currentSection === 'portfolio' && (
-        <Portfolio 
-          userAddress={userAddress}
-          isVisible={currentSection === 'portfolio'}
-        />
+        <DeveloperSection soundSystem={soundSystem} />
       )}
       
       {/* Real-time updates component (always active when wallet connected) */}
@@ -142,10 +182,14 @@ function AppContent() {
           userAddress={userAddress}
           onUpdate={(data) => {
             console.log('Real-time update:', data);
-            // Handle real-time updates here
+            soundSystem.playSound('notification');
           }}
         />
       )}
+      
+      {/* Theme effects overlay */}
+      {theme.effects.particles && <div className="particles-bg fixed inset-0 pointer-events-none z-1" />}
+      {theme.effects.scanlines && <div className="scan-lines fixed inset-0 pointer-events-none z-2" />}
     </div>
   );
 }
