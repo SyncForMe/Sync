@@ -85,8 +85,17 @@ body {
 }
 
 /* Dynamic theme-aware elements */
+.theme-light {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%) !important;
+}
+
+.theme-light .App {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%) !important;
+  color: #111827 !important;
+}
+
 .theme-light .hero-section {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%) !important;
 }
 
 .theme-light .hero-section h1 {
@@ -101,12 +110,21 @@ body {
 }
 
 .theme-light nav {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
-.theme-light nav .text-gray-300 {
-  color: #4b5563 !important;
+.theme-light nav .text-gray-300,
+.theme-light nav .text-white {
+  color: #374151 !important;
+}
+
+.theme-light .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+.theme-light .text-white {
+  color: #111827 !important;
 }
 
 .theme-matrix .hero-section {
@@ -130,7 +148,8 @@ body {
   border-bottom: 1px solid rgba(0, 255, 0, 0.2) !important;
 }
 
-.theme-matrix .text-gray-300 {
+.theme-matrix .text-gray-300,
+.theme-matrix .text-white {
   color: #00aa00 !important;
 }
 
@@ -170,21 +189,27 @@ body {
 
 /* Theme-specific card styles */
 .theme-light .bg-gray-800\\/50,
-.theme-light .bg-gray-800\\/80 {
-  background: rgba(255, 255, 255, 0.8) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+.theme-light .bg-gray-800\\/80,
+.theme-light .bg-gray-700\\/30,
+.theme-light .bg-gray-700\\/50 {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
   color: #111827 !important;
 }
 
 .theme-matrix .bg-gray-800\\/50,
-.theme-matrix .bg-gray-800\\/80 {
+.theme-matrix .bg-gray-800\\/80,
+.theme-matrix .bg-gray-700\\/30,
+.theme-matrix .bg-gray-700\\/50 {
   background: rgba(0, 17, 0, 0.8) !important;
   border: 1px solid rgba(0, 255, 0, 0.3) !important;
   color: #00ff00 !important;
 }
 
 .theme-dark .bg-gray-800\\/50,
-.theme-dark .bg-gray-800\\/80 {
+.theme-dark .bg-gray-800\\/80,
+.theme-dark .bg-gray-700\\/30,
+.theme-dark .bg-gray-700\\/50 {
   background: rgba(31, 41, 55, 0.8) !important;
   border: 1px solid rgba(75, 85, 99, 0.5) !important;
   color: #f9fafb !important;
