@@ -269,6 +269,18 @@ async def get_swap_quote(request: SwapRequest):
 async def execute_swap(request: SwapRequest):
     """Execute cross-chain swap"""
     try:
+        # Get quote first to calculate amounts
+        from_token = next((t for t in POPULAR_TOKENS.get(request.from_chain, []) if t.symbol == request.from_token), None)
+        to_token = next((t for t in POPULAR_TOKENS.get(request.to_chain, []) if t.symbol == request.to_token), None)
+        
+        if not from_token or not to_token:
+            raise HTTPException(status_code=400, detail="Token not found")
+        
+        # Calculate amounts
+        from_amount_float = float(request.amount)
+        from_usd = from_amount_float * (from_token.price_usd or 0)
+        to_amount = from_usd / (to_token.price_usd or 1)
+        
         # Create transaction record
         transaction = Transaction(
             user_address=request.user_address,
@@ -277,24 +289,40 @@ async def execute_swap(request: SwapRequest):
             from_token=request.from_token,
             to_token=request.to_token,
             from_amount=request.amount,
-            to_amount="0",  # Will be updated
-            status="pending"
+            to_amount=str(to_amount * 0.995),  # With slippage
+            status="completed"  # Simulate immediate completion for demo
         )
         
         # Save to database
-        await db.transactions.insert_one(transaction.dict())
+        result = await db.transactions.insert_one(transaction.dict())
+        
+        # Simulate successful transaction
+        transaction.tx_hash = f"0x{result.inserted_id}"
+        transaction.completed_at = datetime.utcnow()
+        
+        # Update the transaction in database
+        await db.transactions.update_one(
+            {"id": transaction.id},
+            {"$set": {"tx_hash": transaction.tx_hash, "completed_at": transaction.completed_at}}
+        )
         
         # Broadcast update
         await manager.broadcast(json.dumps({
-            "type": "transaction_started",
+            "type": "transaction_completed",
             "transaction": transaction.dict()
         }))
         
-        return {"transaction_id": transaction.id, "status": "pending"}
+        return {
+            "transaction_id": transaction.id,
+            "status": "completed",
+            "tx_hash": transaction.tx_hash,
+            "from_amount": transaction.from_amount,
+            "to_amount": transaction.to_amount
+        }
         
     except Exception as e:
         logger.error(f"Swap error: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Swap execution failed: {str(e)}")
 
 @app.get("/api/transactions/{user_address}")
 async def get_user_transactions(user_address: str):
