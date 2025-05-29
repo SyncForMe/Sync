@@ -9,6 +9,7 @@ class SyncAPITester:
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
+        self.test_user_address = "demo_address_123"
 
     def run_test(self, name, method, endpoint, expected_status, data=None):
         """Run a single API test"""
@@ -107,7 +108,7 @@ class SyncAPITester:
             "to_token": "SOL",
             "amount": "1.0",
             "slippage": 0.5,
-            "user_address": "test123"
+            "user_address": self.test_user_address
         }
         
         success, response = self.run_test(
@@ -126,6 +127,53 @@ class SyncAPITester:
             print(f"  Execution time: {quote['execution_time']}s")
             if 'bridge_fees' in quote and quote['bridge_fees']:
                 print(f"  Bridge fees: {quote['bridge_fees']}")
+        
+        return success
+
+    def test_execute_swap(self):
+        """Test swap execution endpoint"""
+        data = {
+            "from_chain": "ethereum",
+            "to_chain": "solana",
+            "from_token": "ETH",
+            "to_token": "SOL",
+            "amount": "1.0",
+            "slippage": 0.5,
+            "user_address": self.test_user_address
+        }
+        
+        success, response = self.run_test(
+            "Execute Cross-Chain Swap",
+            "POST",
+            "/api/swap",
+            200,
+            data=data
+        )
+        
+        if success:
+            print(f"Swap executed successfully:")
+            print(f"  Transaction ID: {response.get('transaction_id')}")
+            print(f"  Status: {response.get('status')}")
+            print(f"  TX Hash: {response.get('tx_hash')}")
+            print(f"  From: {response.get('from_amount')} ETH")
+            print(f"  To: {response.get('to_amount')} SOL")
+        
+        return success
+
+    def test_get_transactions(self):
+        """Test get user transactions endpoint"""
+        success, response = self.run_test(
+            "Get User Transactions",
+            "GET",
+            f"/api/transactions/{self.test_user_address}",
+            200
+        )
+        
+        if success and 'transactions' in response:
+            transactions = response['transactions']
+            print(f"Found {len(transactions)} transactions for user {self.test_user_address}:")
+            for tx in transactions[:3]:  # Show first 3 transactions
+                print(f"  - {tx['from_amount']} {tx['from_token']} → {tx['to_amount']} {tx['to_token']} ({tx['status']})")
         
         return success
 
@@ -150,7 +198,7 @@ class SyncAPITester:
         success, response = self.run_test(
             "Get User Portfolio",
             "GET",
-            "/api/portfolio/test123",
+            f"/api/portfolio/{self.test_user_address}",
             200
         )
         
@@ -165,6 +213,22 @@ class SyncAPITester:
         
         return success
 
+    def test_sdk_widget_config(self):
+        """Test SDK widget configuration endpoint"""
+        success, response = self.run_test(
+            "Get SDK Widget Config",
+            "GET",
+            "/api/sdk/widget-config",
+            200
+        )
+        
+        if success:
+            print("SDK Widget Configuration:")
+            for key, value in response.items():
+                print(f"  {key}: {value}")
+        
+        return success
+
 def main():
     # Setup
     tester = SyncAPITester()
@@ -176,8 +240,11 @@ def main():
         tester.test_get_chains,
         tester.test_get_tokens,
         tester.test_get_quote,
+        tester.test_execute_swap,  # Added swap execution test
+        tester.test_get_transactions,  # Added transactions test
         tester.test_get_stats,
-        tester.test_portfolio
+        tester.test_portfolio,
+        tester.test_sdk_widget_config  # Added SDK widget config test
     ]
     
     for test in tests:
