@@ -39,10 +39,16 @@ function RealTimeUpdates({ userAddress, onUpdate }) {
       
       ws.onmessage = (event) => {
         try {
+          // Skip parsing if it's an echo message from the server
+          if (typeof event.data === 'string' && event.data.startsWith('Echo:')) {
+            console.log('WebSocket echo:', event.data);
+            return;
+          }
+          
           const data = JSON.parse(event.data);
           handleRealtimeUpdate(data);
         } catch (error) {
-          console.error('WebSocket message parse error:', error);
+          console.log('WebSocket non-JSON message:', event.data);
         }
       };
       
