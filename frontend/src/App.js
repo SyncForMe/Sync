@@ -79,6 +79,7 @@ function App() {
         setCurrentSection={setCurrentSection}
         walletConnected={walletConnected}
         connectedWallet={connectedWallet}
+        userAddress={userAddress}
         disconnectWallet={disconnectWallet}
       />
       
