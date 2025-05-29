@@ -114,11 +114,15 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(themes.cyber);
 
   useEffect(() => {
-    // Load theme from localStorage
+    // Load theme from localStorage on component mount
     const savedTheme = localStorage.getItem('sync-theme');
     if (savedTheme && themes[savedTheme]) {
       setCurrentTheme(savedTheme);
       setTheme(themes[savedTheme]);
+    } else {
+      // Set default theme
+      setCurrentTheme('cyber');
+      setTheme(themes.cyber);
     }
   }, []);
 
