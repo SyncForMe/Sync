@@ -453,17 +453,83 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
-# Developer SDK endpoints
-@app.get("/api/sdk/widget-config")
-async def get_widget_config():
-    """Get configuration for SYNC widget integration"""
-    return {
-        "widget_version": "1.0.0",
-        "supported_chains": list(SUPPORTED_CHAINS.keys()),
-        "default_theme": "dark",
-        "cdn_url": "https://cdn.sync.fm/widget/",
-        "documentation": "https://docs.sync.fm/widget"
-    }
+# Real-time price feeds and market data
+@app.get("/api/prices")
+async def get_token_prices():
+    """Get real-time token prices (simulated)"""
+    try:
+        # In production, integrate with CoinGecko, CoinMarketCap, or other price APIs
+        prices = {
+            "ethereum": {
+                "ETH": {"price": 3250.75, "change_24h": 2.45, "volume_24h": 15000000000},
+                "USDC": {"price": 1.001, "change_24h": 0.01, "volume_24h": 8000000000},
+                "USDT": {"price": 0.999, "change_24h": -0.02, "volume_24h": 12000000000}
+            },
+            "solana": {
+                "SOL": {"price": 162.30, "change_24h": -1.25, "volume_24h": 2500000000},
+                "USDC": {"price": 1.000, "change_24h": 0.00, "volume_24h": 1500000000}
+            },
+            "polygon": {
+                "MATIC": {"price": 0.845, "change_24h": 3.78, "volume_24h": 500000000},
+                "USDC": {"price": 1.000, "change_24h": 0.01, "volume_24h": 800000000}
+            },
+            "arbitrum": {
+                "ETH": {"price": 3250.75, "change_24h": 2.45, "volume_24h": 3000000000},
+                "ARB": {"price": 1.25, "change_24h": 5.20, "volume_24h": 400000000}
+            },
+            "optimism": {
+                "ETH": {"price": 3250.75, "change_24h": 2.45, "volume_24h": 2000000000},
+                "OP": {"price": 2.15, "change_24h": 1.80, "volume_24h": 300000000}
+            },
+            "bsc": {
+                "BNB": {"price": 315.50, "change_24h": -0.95, "volume_24h": 1800000000},
+                "USDT": {"price": 0.999, "change_24h": -0.01, "volume_24h": 2500000000}
+            },
+            "fantom": {
+                "FTM": {"price": 0.42, "change_24h": 7.35, "volume_24h": 150000000}
+            },
+            "avalanche": {
+                "AVAX": {"price": 35.80, "change_24h": 4.20, "volume_24h": 800000000}
+            }
+        }
+        
+        return {"prices": prices, "timestamp": datetime.utcnow().isoformat()}
+        
+    except Exception as e:
+        logger.error(f"Price fetch error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/market-data")
+async def get_market_data():
+    """Get comprehensive market data"""
+    try:
+        market_data = {
+            "total_market_cap": 2650000000000,  # $2.65T
+            "total_volume_24h": 85000000000,    # $85B
+            "defi_tvl": 95000000000,            # $95B
+            "cross_chain_volume_24h": 1200000000, # $1.2B
+            "active_chains": 8,
+            "supported_protocols": 45,
+            "trending_tokens": [
+                {"symbol": "ETH", "price": 3250.75, "change_24h": 2.45},
+                {"symbol": "SOL", "price": 162.30, "change_24h": -1.25},
+                {"symbol": "MATIC", "price": 0.845, "change_24h": 3.78},
+                {"symbol": "ARB", "price": 1.25, "change_24h": 5.20},
+                {"symbol": "OP", "price": 2.15, "change_24h": 1.80}
+            ],
+            "gas_prices": {
+                "ethereum": {"standard": 25, "fast": 35, "instant": 45},
+                "polygon": {"standard": 30, "fast": 40, "instant": 50},
+                "arbitrum": {"standard": 0.5, "fast": 0.8, "instant": 1.2},
+                "optimism": {"standard": 0.001, "fast": 0.002, "instant": 0.003}
+            }
+        }
+        
+        return {"market_data": market_data, "timestamp": datetime.utcnow().isoformat()}
+        
+    except Exception as e:
+        logger.error(f"Market data error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/sdk/embed-quote")
 async def get_embed_quote(request: SwapRequest):
