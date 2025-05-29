@@ -10,6 +10,14 @@ import { ThemeProvider, ThemeSwitcher, useTheme } from './utils/ThemeSystem';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://af267735-92eb-4cf3-b052-dff209029be0.preview.emergentagent.com';
 
 // Main App Component
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
+
 function AppContent() {
   const [currentSection, setCurrentSection] = useState('landing');
   const [walletConnected, setWalletConnected] = useState(false);
