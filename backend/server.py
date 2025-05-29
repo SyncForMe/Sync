@@ -536,6 +536,18 @@ async def get_embed_quote(request: SwapRequest):
     """Get quote for embedded widget"""
     return await get_swap_quote(request)
 
+# Developer SDK endpoints  
+@app.get("/api/sdk/widget-config")
+async def get_widget_config():
+    """Get configuration for SYNC widget integration"""
+    return {
+        "widget_version": "1.0.0",
+        "supported_chains": list(SUPPORTED_CHAINS.keys()),
+        "default_theme": "dark",
+        "cdn_url": "https://cdn.sync.fm/widget/",
+        "documentation": "https://docs.sync.fm/widget"
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
