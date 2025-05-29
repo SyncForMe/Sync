@@ -615,7 +615,7 @@ function DeveloperSection() {
             <div className="bg-black/50 rounded-lg p-4 text-sm text-green-400 font-mono mb-4">
               <div>&lt;script src="https://cdn.sync.fm/widget.js"&gt;&lt;/script&gt;</div>
               <div className="mt-2">&lt;div id="sync-widget"&gt;&lt;/div&gt;</div>
-              <div className="mt-2">new SyncWidget({{ containerId: 'sync-widget' }});</div>
+              <div className="mt-2">new SyncWidget(&#123; containerId: 'sync-widget' &#125;);</div>
             </div>
             
             <button className="w-full p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all">
