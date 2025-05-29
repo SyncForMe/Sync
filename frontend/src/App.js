@@ -155,6 +155,12 @@ function Navigation({ currentSection, setCurrentSection, walletConnected, connec
                 Swap
               </button>
               <button 
+                onClick={() => setCurrentSection('portfolio')}
+                className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'portfolio' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
+              >
+                Portfolio
+              </button>
+              <button 
                 onClick={() => setCurrentSection('demo')}
                 className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'demo' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
               >
