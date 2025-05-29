@@ -84,20 +84,110 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Cyberpunk Background Effects */
-.App::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(128, 0, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 1;
+/* Dynamic theme-aware elements */
+.theme-light .hero-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%) !important;
+}
+
+.theme-light .hero-section h1 {
+  background: linear-gradient(45deg, #7c3aed, #db2777) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.theme-light .hero-section p {
+  color: #4b5563 !important;
+}
+
+.theme-light nav {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.theme-light nav .text-gray-300 {
+  color: #4b5563 !important;
+}
+
+.theme-matrix .hero-section {
+  background: linear-gradient(135deg, #000000 0%, #001100 50%, #000000 100%) !important;
+}
+
+.theme-matrix .hero-section h1 {
+  background: linear-gradient(45deg, #00ff00, #00aa00) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 0 20px rgba(0, 255, 0, 0.5) !important;
+}
+
+.theme-matrix .hero-section p {
+  color: #00aa00 !important;
+}
+
+.theme-matrix nav {
+  background: rgba(0, 17, 0, 0.9) !important;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2) !important;
+}
+
+.theme-matrix .text-gray-300 {
+  color: #00aa00 !important;
+}
+
+.theme-dark .hero-section {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%) !important;
+}
+
+.theme-dark .hero-section h1 {
+  background: linear-gradient(45deg, #6366f1, #ec4899) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.theme-dark .hero-section p {
+  color: #d1d5db !important;
+}
+
+/* Button theme adaptations */
+.theme-light button {
+  color: #111827 !important;
+}
+
+.theme-light .bg-gradient-to-r {
+  background: linear-gradient(45deg, #7c3aed, #db2777) !important;
+  color: white !important;
+}
+
+.theme-matrix .bg-gradient-to-r {
+  background: linear-gradient(45deg, #00ff00, #00aa00) !important;
+  color: #000000 !important;
+}
+
+.theme-dark .bg-gradient-to-r {
+  background: linear-gradient(45deg, #6366f1, #ec4899) !important;
+}
+
+/* Theme-specific card styles */
+.theme-light .bg-gray-800\\/50,
+.theme-light .bg-gray-800\\/80 {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #111827 !important;
+}
+
+.theme-matrix .bg-gray-800\\/50,
+.theme-matrix .bg-gray-800\\/80 {
+  background: rgba(0, 17, 0, 0.8) !important;
+  border: 1px solid rgba(0, 255, 0, 0.3) !important;
+  color: #00ff00 !important;
+}
+
+.theme-dark .bg-gray-800\\/50,
+.theme-dark .bg-gray-800\\/80 {
+  background: rgba(31, 41, 55, 0.8) !important;
+  border: 1px solid rgba(75, 85, 99, 0.5) !important;
+  color: #f9fafb !important;
 }
 
 /* Particle Animation Background */
