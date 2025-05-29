@@ -130,16 +130,68 @@ export function ThemeProvider({ children }) {
     if (themeData) {
       // Set CSS custom properties
       Object.entries(themeData.colors).forEach(([key, value]) => {
-        root.style.setProperty(`--color-${key}`, value);
+        root.style.setProperty(`--color-${key.replace('_', '-')}`, value);
       });
       
       // Set theme class
       root.className = `theme-${currentTheme}`;
       
+      // Apply theme-specific body styles
+      document.body.style.background = themeData.colors.background;
+      document.body.style.color = themeData.colors.text;
+      
       // Store in localStorage
       localStorage.setItem('sync-theme', currentTheme);
       
       setTheme(themeData);
+      
+      // Add theme-specific effects
+      const appElement = document.querySelector('.App');
+      if (appElement) {
+        appElement.style.background = themeData.colors.background;
+        appElement.style.color = themeData.colors.text;
+        
+        // Update navigation styles
+        const nav = document.querySelector('nav');
+        if (nav) {
+          if (currentTheme === 'light') {
+            nav.style.background = 'rgba(255, 255, 255, 0.9)';
+            nav.style.borderBottomColor = 'rgba(0, 0, 0, 0.1)';
+          } else if (currentTheme === 'matrix') {
+            nav.style.background = 'rgba(0, 17, 0, 0.9)';
+            nav.style.borderBottomColor = 'rgba(0, 255, 0, 0.2)';
+          } else {
+            nav.style.background = 'rgba(0, 0, 0, 0.9)';
+            nav.style.borderBottomColor = 'rgba(128, 0, 255, 0.2)';
+          }
+        }
+        
+        // Update card backgrounds
+        const cards = document.querySelectorAll('.bg-gray-800\\/50, .bg-gray-800\\/80');
+        cards.forEach(card => {
+          if (currentTheme === 'light') {
+            card.style.background = 'rgba(255, 255, 255, 0.8)';
+            card.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+            card.style.color = '#111827';
+          } else if (currentTheme === 'matrix') {
+            card.style.background = 'rgba(0, 17, 0, 0.8)';
+            card.style.borderColor = 'rgba(0, 255, 0, 0.3)';
+            card.style.color = '#00ff00';
+          } else {
+            card.style.background = 'rgba(31, 41, 55, 0.5)';
+            card.style.borderColor = themeData.colors.border;
+            card.style.color = themeData.colors.text;
+          }
+        });
+        
+        // Update buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+          if (button.classList.contains('bg-gradient-to-r')) {
+            button.style.background = `linear-gradient(45deg, ${themeData.colors.primary}, ${themeData.colors.secondary})`;
+          }
+        });
+      }
     }
   }, [currentTheme]);
 
