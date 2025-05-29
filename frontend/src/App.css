@@ -1,38 +1,438 @@
+/* SYNC.fm - Cyberpunk Cross-Chain Interface */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rajdhani', 'Arial', sans-serif;
+  background: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
 .App {
-    text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
+  position: relative;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Cyberpunk Background Effects */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(128, 0, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Particle Animation Background */
+.particles-bg {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #8000ff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 0, 128, 0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #00ffff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(128, 0, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255, 0, 128, 0.4), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: particleMove 20s linear infinite;
+  opacity: 0.6;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+@keyframes particleMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-200px, -100px); }
 }
 
-.App-link {
-    color: #61dafb;
+/* Glow Effects */
+.glow-effect {
+  box-shadow: 
+    0 0 20px rgba(128, 0, 255, 0.3),
+    0 0 40px rgba(128, 0, 255, 0.2),
+    0 0 60px rgba(128, 0, 255, 0.1);
+  transition: box-shadow 0.3s ease;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.glow-effect:hover {
+  box-shadow: 
+    0 0 30px rgba(128, 0, 255, 0.5),
+    0 0 60px rgba(128, 0, 255, 0.3),
+    0 0 90px rgba(128, 0, 255, 0.2);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  z-index: 2;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    radial-gradient(ellipse at center, rgba(128, 0, 255, 0.15) 0%, transparent 70%);
+}
+
+.hero-section h1 {
+  text-shadow: 
+    0 0 20px rgba(128, 0, 255, 0.5),
+    0 0 40px rgba(255, 0, 128, 0.3);
+  font-size: clamp(3rem, 8vw, 8rem);
+  letter-spacing: 0.1em;
+}
+
+/* Cyberpunk Grid Effect */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(128, 0, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(128, 0, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: gridMove 10s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
+}
+
+/* Neon Border Effect */
+.neon-border {
+  border: 2px solid transparent;
+  background: linear-gradient(45deg, #8000ff, #ff0080, #00ffff, #8000ff) padding-box,
+              linear-gradient(45deg, #8000ff, #ff0080, #00ffff, #8000ff) border-box;
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% { box-shadow: 0 0 10px rgba(128, 0, 255, 0.5); }
+  100% { box-shadow: 0 0 30px rgba(128, 0, 255, 0.8), 0 0 60px rgba(255, 0, 128, 0.4); }
+}
+
+/* Holographic Text Effect */
+.holographic {
+  background: linear-gradient(45deg, #8000ff, #ff0080, #00ffff, #8000ff);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holographicShift 3s ease-in-out infinite;
+}
+
+@keyframes holographicShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Button Enhancements */
+button {
+  position: relative;
+  overflow: hidden;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+/* Scan Line Effect */
+.scan-lines {
+  position: relative;
+}
+
+.scan-lines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
+/* Card Hover Effects */
+.feature-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(128, 0, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(128, 0, 255, 0.1), transparent);
+  animation: cardRotate 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes cardRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(128, 0, 255, 0.6);
+  box-shadow: 
+    0 10px 30px rgba(128, 0, 255, 0.2),
+    0 0 50px rgba(255, 0, 128, 0.1);
+}
+
+/* Glitch Text Effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch-1 2s infinite;
+  color: rgba(255, 0, 128, 0.7);
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-2 2s infinite;
+  color: rgba(0, 255, 255, 0.7);
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 14%, 15%, 49%, 50%, 99%, 100% { transform: translate(0); }
+  15%, 49% { transform: translate(-2px, 1px); }
+}
+
+@keyframes glitch-2 {
+  0%, 20%, 21%, 62%, 63%, 99%, 100% { transform: translate(0); }
+  21%, 62% { transform: translate(2px, -1px); }
+}
+
+/* Loading Animation */
+.cyber-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(128, 0, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #8000ff;
+  animation: cyberSpin 1s ease-in-out infinite;
+}
+
+@keyframes cyberSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Data Stream Effect */
+.data-stream {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.data-stream::before {
+  content: '01001000 01100101 01101100 01101100 01101111';
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  white-space: pre;
+  animation: dataFlow 10s linear infinite;
+}
+
+@keyframes dataFlow {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Terminal Effect */
+.terminal {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #00ff00;
+  font-family: 'Courier New', monospace;
+  color: #00ff00;
+  padding: 1rem;
+  border-radius: 5px;
+  position: relative;
+}
+
+.terminal::before {
+  content: '> ';
+  color: #00ff00;
+}
+
+.terminal-cursor {
+  animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
+  
+  .particles-bg {
+    background-size: 100px 50px;
+  }
+  
+  .cyber-grid {
+    background-size: 10px 10px;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #8000ff, #ff0080);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #9000ff, #ff0090);
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(128, 0, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus States */
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid #8000ff;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .App {
+    background: #000000;
+  }
+  
+  .feature-card {
+    border: 2px solid #ffffff;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .particles-bg,
+  .data-stream,
+  .scan-lines::after {
+    display: none;
+  }
+}
+
+/* Loading States */
+.loading-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(128, 0, 255, 0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Error States */
+.error-glow {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  border-color: rgba(255, 0, 0, 0.6) !important;
+}
+
+/* Success States */
+.success-glow {
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  border-color: rgba(0, 255, 0, 0.6) !important;
 }
