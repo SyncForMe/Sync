@@ -293,29 +293,32 @@ async def execute_swap(request: SwapRequest):
             status="completed"  # Simulate immediate completion for demo
         )
         
+        # Convert to dict for database insertion
+        transaction_dict = transaction.dict()
+        transaction_dict["created_at"] = datetime.utcnow()
+        transaction_dict["completed_at"] = datetime.utcnow()
+        
         # Save to database
-        result = await db.transactions.insert_one(transaction.dict())
+        result = await db.transactions.insert_one(transaction_dict)
         
         # Simulate successful transaction
-        transaction.tx_hash = f"0x{result.inserted_id}"
-        transaction.completed_at = datetime.utcnow()
-        
-        # Update the transaction in database
-        await db.transactions.update_one(
-            {"id": transaction.id},
-            {"$set": {"tx_hash": transaction.tx_hash, "completed_at": transaction.completed_at}}
-        )
+        tx_hash = f"0x{str(result.inserted_id)[-12:]}"
         
         # Broadcast update
         await manager.broadcast(json.dumps({
             "type": "transaction_completed",
-            "transaction": transaction.dict()
+            "transaction": {
+                **transaction_dict,
+                "tx_hash": tx_hash,
+                "created_at": transaction_dict["created_at"].isoformat(),
+                "completed_at": transaction_dict["completed_at"].isoformat()
+            }
         }))
         
         return {
             "transaction_id": transaction.id,
             "status": "completed",
-            "tx_hash": transaction.tx_hash,
+            "tx_hash": tx_hash,
             "from_amount": transaction.from_amount,
             "to_amount": transaction.to_amount
         }
