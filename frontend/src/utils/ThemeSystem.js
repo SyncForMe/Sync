@@ -166,44 +166,84 @@ export function ThemeProvider({ children }) {
 // Theme Switcher Component
 export function ThemeSwitcher() {
   const { currentTheme, themes, switchTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleThemeSwitch = (themeId) => {
+    switchTheme(themeId);
+    setIsOpen(false);
+  };
 
   return (
-    <div className="relative group">
-      <button className="p-2 rounded-lg bg-gray-800/50 border border-purple-500/20 hover:border-purple-500/40 transition-all">
+    <div className="relative">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-800/50 border border-purple-500/20 hover:border-purple-500/40 transition-all"
+        title="Change Theme"
+      >
         <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
         </svg>
       </button>
       
-      <div className="absolute right-0 top-12 bg-gray-800/95 backdrop-blur-sm border border-purple-500/20 rounded-xl p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-48">
-        <h4 className="text-sm font-semibold text-white mb-3">Choose Theme</h4>
-        
-        <div className="space-y-2">
-          {Object.values(themes).map((theme) => (
-            <button
-              key={theme.id}
-              onClick={() => switchTheme(theme.id)}
-              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all ${
-                currentTheme === theme.id
-                  ? 'bg-purple-600/30 border border-purple-500/50'
-                  : 'hover:bg-gray-700/50'
-              }`}
-            >
-              <div 
-                className="w-4 h-4 rounded border-2"
-                style={{ 
-                  background: theme.colors.primary,
-                  borderColor: theme.colors.secondary
-                }}
-              />
-              <span className="text-sm text-white">{theme.name}</span>
-              {currentTheme === theme.id && (
-                <div className="ml-auto w-2 h-2 bg-purple-400 rounded-full" />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Dropdown */}
+          <div className="absolute right-0 top-12 bg-gray-800/95 backdrop-blur-sm border border-purple-500/20 rounded-xl p-4 opacity-100 visible transition-all duration-200 z-50 min-w-56 shadow-2xl">
+            <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+              </svg>
+              Choose Theme
+            </h4>
+            
+            <div className="space-y-2">
+              {Object.values(themes).map((theme) => (
+                <button
+                  key={theme.id}
+                  onClick={() => handleThemeSwitch(theme.id)}
+                  className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all ${
+                    currentTheme === theme.id
+                      ? 'bg-purple-600/30 border border-purple-500/50'
+                      : 'hover:bg-gray-700/50 border border-transparent'
+                  }`}
+                >
+                  <div 
+                    className="w-5 h-5 rounded border-2 flex-shrink-0"
+                    style={{ 
+                      background: `linear-gradient(45deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
+                      borderColor: theme.colors.accent
+                    }}
+                  />
+                  <div className="flex-1 text-left">
+                    <span className="text-sm text-white font-medium">{theme.name}</span>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {theme.id === 'cyber' && 'Purple cyberpunk vibes'}
+                      {theme.id === 'dark' && 'Clean dark interface'}
+                      {theme.id === 'light' && 'Bright and accessible'}
+                      {theme.id === 'matrix' && 'Green hacker aesthetic'}
+                    </div>
+                  </div>
+                  {currentTheme === theme.id && (
+                    <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+            
+            <div className="mt-3 pt-3 border-t border-gray-700">
+              <div className="text-xs text-gray-500 text-center">
+                Theme: {themes[currentTheme]?.name}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
