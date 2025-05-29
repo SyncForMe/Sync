@@ -305,15 +305,25 @@ async def execute_swap(request: SwapRequest):
         tx_hash = f"0x{str(result.inserted_id)[-12:]}"
         
         # Broadcast update
-        await manager.broadcast(json.dumps({
+        broadcast_transaction = {
             "type": "transaction_completed",
             "transaction": {
-                **transaction_dict,
+                "id": transaction.id,
+                "user_address": transaction.user_address,
+                "from_chain": transaction.from_chain,
+                "to_chain": transaction.to_chain,
+                "from_token": transaction.from_token,
+                "to_token": transaction.to_token,
+                "from_amount": transaction.from_amount,
+                "to_amount": transaction.to_amount,
+                "status": transaction.status,
                 "tx_hash": tx_hash,
                 "created_at": transaction_dict["created_at"].isoformat(),
                 "completed_at": transaction_dict["completed_at"].isoformat()
             }
-        }))
+        }
+        
+        await manager.broadcast(json.dumps(broadcast_transaction))
         
         return {
             "transaction_id": transaction.id,
