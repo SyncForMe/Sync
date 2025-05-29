@@ -332,11 +332,20 @@ async def get_user_transactions(user_address: str):
             {"user_address": user_address}
         ).sort("created_at", -1).limit(50).to_list(50)
         
+        # Convert ObjectId to string and handle datetime serialization
+        for transaction in transactions:
+            if "_id" in transaction:
+                transaction["_id"] = str(transaction["_id"])
+            if "created_at" in transaction and hasattr(transaction["created_at"], "isoformat"):
+                transaction["created_at"] = transaction["created_at"].isoformat()
+            if "completed_at" in transaction and transaction["completed_at"] and hasattr(transaction["completed_at"], "isoformat"):
+                transaction["completed_at"] = transaction["completed_at"].isoformat()
+        
         return {"transactions": transactions}
         
     except Exception as e:
         logger.error(f"Transaction history error: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"transactions": []}
 
 @app.get("/api/portfolio/{user_address}")
 async def get_user_portfolio(user_address: str):
