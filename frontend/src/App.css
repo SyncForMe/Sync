@@ -1,6 +1,66 @@
 /* SYNC.fm - Cyberpunk Cross-Chain Interface */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
+/* CSS Custom Properties for Dynamic Theming */
+:root {
+  --color-primary: #8000ff;
+  --color-secondary: #ff0080;
+  --color-accent: #00ffff;
+  --color-background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(128, 0, 255, 0.2);
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-success: #00ff88;
+  --color-error: #ff0044;
+  --color-warning: #ffaa00;
+}
+
+/* Theme Classes */
+.theme-cyber {
+  --color-primary: #8000ff;
+  --color-secondary: #ff0080;
+  --color-accent: #00ffff;
+  --color-background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(128, 0, 255, 0.2);
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
+}
+
+.theme-dark {
+  --color-primary: #6366f1;
+  --color-secondary: #ec4899;
+  --color-accent: #06b6d4;
+  --color-background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(75, 85, 99, 0.5);
+  --color-text: #f9fafb;
+  --color-text-secondary: #d1d5db;
+}
+
+.theme-light {
+  --color-primary: #7c3aed;
+  --color-secondary: #db2777;
+  --color-accent: #0891b2;
+  --color-background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+  --color-surface: rgba(0, 0, 0, 0.02);
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-text: #111827;
+  --color-text-secondary: #4b5563;
+}
+
+.theme-matrix {
+  --color-primary: #00ff00;
+  --color-secondary: #00aa00;
+  --color-accent: #00ffaa;
+  --color-background: linear-gradient(135deg, #000000 0%, #001100 50%, #000000 100%);
+  --color-surface: rgba(0, 255, 0, 0.05);
+  --color-border: rgba(0, 255, 0, 0.2);
+  --color-text: #00ff00;
+  --color-text-secondary: #00aa00;
+}
+
 /* Reset and Base Styles */
 * {
   margin: 0;
@@ -11,15 +71,17 @@
 body {
   font-family: 'Rajdhani', 'Arial', sans-serif;
   background: #000000;
-  color: #ffffff;
+  color: var(--color-text);
   overflow-x: hidden;
   line-height: 1.6;
 }
 
 .App {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
+  background: var(--color-background);
+  color: var(--color-text);
   position: relative;
+  transition: all 0.3s ease;
 }
 
 /* Cyberpunk Background Effects */
