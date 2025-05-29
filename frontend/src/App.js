@@ -143,7 +143,17 @@ function AppContent() {
 }
 
 // Navigation Component
-function Navigation({ currentSection, setCurrentSection, walletConnected, connectedWallet, userAddress, disconnectWallet }) {
+function Navigation({ currentSection, setCurrentSection, walletConnected, connectedWallet, userAddress, disconnectWallet, soundSystem }) {
+  const handleNavClick = (section) => {
+    soundSystem?.playSound('click');
+    setCurrentSection(section);
+  };
+
+  const handleWalletAction = (action) => {
+    soundSystem?.playSound('click');
+    action();
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-black/90 backdrop-blur-sm border-b border-purple-500/20 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -151,31 +161,31 @@ function Navigation({ currentSection, setCurrentSection, walletConnected, connec
           <div className="flex items-center space-x-8">
             <div 
               className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
-              onClick={() => setCurrentSection('landing')}
+              onClick={() => handleNavClick('landing')}
             >
               sync.fm
             </div>
             <div className="hidden md:flex space-x-6">
               <button 
-                onClick={() => setCurrentSection('swap')}
+                onClick={() => handleNavClick('swap')}
                 className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'swap' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
               >
                 Swap
               </button>
               <button 
-                onClick={() => setCurrentSection('portfolio')}
+                onClick={() => handleNavClick('portfolio')}
                 className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'portfolio' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
               >
                 Portfolio
               </button>
               <button 
-                onClick={() => setCurrentSection('demo')}
+                onClick={() => handleNavClick('demo')}
                 className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'demo' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
               >
                 Demo
               </button>
               <button 
-                onClick={() => setCurrentSection('developer')}
+                onClick={() => handleNavClick('developer')}
                 className={`px-3 py-2 rounded-lg transition-all ${currentSection === 'developer' ? 'text-purple-400 bg-purple-500/10' : 'text-gray-300 hover:text-purple-400'}`}
               >
                 Developers
@@ -184,14 +194,17 @@ function Navigation({ currentSection, setCurrentSection, walletConnected, connec
           </div>
           
           <div className="flex items-center space-x-4">
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
+            
             {walletConnected ? (
               <div className="flex items-center space-x-3">
                 <div className="text-sm text-gray-300">
                   <span className="text-purple-400">{connectedWallet}</span>
-                  <div className="text-xs text-gray-500">{userAddress.slice(0, 6)}...{userAddress.slice(-4)}</div>
+                  <div className="text-xs text-gray-500">{userAddress?.slice(0, 6)}...{userAddress?.slice(-4)}</div>
                 </div>
                 <button 
-                  onClick={disconnectWallet}
+                  onClick={() => handleWalletAction(disconnectWallet)}
                   className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all"
                 >
                   Disconnect
@@ -199,7 +212,7 @@ function Navigation({ currentSection, setCurrentSection, walletConnected, connec
               </div>
             ) : (
               <button 
-                onClick={() => setCurrentSection('swap')}
+                onClick={() => handleNavClick('swap')}
                 className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-all"
               >
                 Connect Wallet
