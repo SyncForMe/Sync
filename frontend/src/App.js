@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Portfolio from './components/Portfolio';
+import AdvancedPortfolio from './components/AdvancedPortfolio';
 import RealTimeUpdates from './components/RealTimeUpdates';
+import WalletManager from './utils/WalletManager';
+import SoundSystem from './utils/SoundSystem';
+import { ThemeProvider, ThemeSwitcher, useTheme } from './utils/ThemeSystem';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://af267735-92eb-4cf3-b052-dff209029be0.preview.emergentagent.com';
 
