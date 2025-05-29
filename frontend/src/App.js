@@ -112,6 +112,24 @@ function App() {
       {currentSection === 'developer' && (
         <DeveloperSection />
       )}
+      
+      {currentSection === 'portfolio' && (
+        <Portfolio 
+          userAddress={userAddress}
+          isVisible={currentSection === 'portfolio'}
+        />
+      )}
+      
+      {/* Real-time updates component (always active when wallet connected) */}
+      {walletConnected && (
+        <RealTimeUpdates 
+          userAddress={userAddress}
+          onUpdate={(data) => {
+            console.log('Real-time update:', data);
+            // Handle real-time updates here
+          }}
+        />
+      )}
     </div>
   );
 }
