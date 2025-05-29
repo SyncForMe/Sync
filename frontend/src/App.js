@@ -378,12 +378,62 @@ function SwapInterface({ walletConnected, userAddress, supportedChains, connectW
           user_address: userAddress
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
-      alert(`Swap initiated! Transaction ID: ${data.transaction_id}`);
+      
+      // Show success message
+      const successDiv = document.createElement('div');
+      successDiv.className = 'fixed top-20 right-4 z-50 p-6 bg-green-600 text-white rounded-xl max-w-sm shadow-2xl transform transition-all duration-300';
+      successDiv.innerHTML = `
+        <div class="font-bold text-lg mb-2">🎉 Swap Successful!</div>
+        <div class="text-sm opacity-90 mb-2">
+          ${amount} ${fromToken} → ${data.to_amount} ${toToken}
+        </div>
+        <div class="text-xs opacity-75">
+          Transaction: ${data.tx_hash?.slice(0, 20)}...
+        </div>
+      `;
+      
+      document.body.appendChild(successDiv);
+      
+      // Remove notification after 6 seconds
+      setTimeout(() => {
+        successDiv.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (successDiv.parentNode) {
+            successDiv.parentNode.removeChild(successDiv);
+          }
+        }, 300);
+      }, 6000);
+      
+      // Reset form
       setQuote(null);
       setAmount('');
+      
     } catch (error) {
       console.error('Swap error:', error);
+      
+      // Show error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'fixed top-20 right-4 z-50 p-6 bg-red-600 text-white rounded-xl max-w-sm shadow-2xl';
+      errorDiv.innerHTML = `
+        <div class="font-bold text-lg mb-2">❌ Swap Failed</div>
+        <div class="text-sm opacity-90">
+          ${error.message || 'Please try again later'}
+        </div>
+      `;
+      
+      document.body.appendChild(errorDiv);
+      
+      setTimeout(() => {
+        if (errorDiv.parentNode) {
+          errorDiv.parentNode.removeChild(errorDiv);
+        }
+      }, 5000);
     }
     setSwapLoading(false);
   };
